@@ -1,0 +1,23 @@
+import java.util.*;
+
+public class TopKFrequent {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums)
+            freq.put(n, freq.getOrDefault(n, 0) + 1);
+
+        PriorityQueue<Map.Entry<Integer, Integer>> pq =
+            new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+
+        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {
+            pq.offer(e);
+            if (pq.size() > k)
+                pq.poll();
+        }
+
+        int[] res = new int[k];
+        for (int i = k - 1; i >= 0; i--)
+            res[i] = pq.poll().getKey();
+        return res;
+    }
+}
